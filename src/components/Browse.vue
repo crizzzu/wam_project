@@ -1,6 +1,6 @@
 <template>
-    <ul>
-        <div class="main-container">
+  <body>
+  <header>
             <nav>
                 <div class="logo-container">
                 </div>
@@ -17,21 +17,28 @@
                         <router-link to="/browse">Browse</router-link>
                         </span>
                         <span class="separator"></span>
+                      <span>
+                        <router-link to="/index">Index</router-link>
+                        </span>
+                        <span class="separator"></span>
                         <span>
                         <router-link to="/login">Log Out</router-link>
                         </span>
                     </div>
                 </div>
             </nav>
-        </div>
-            <div class="profile">
+  </header>
+  <div class="main-container">
+  <div class="profile">
                 <li  v-for="(profile, ix) in allProfiles" :key="ix">
                     <img v-bind:src="profile.avatar" alt="John Doe">
                     <h2>{{profile.firstname}} {{profile.lastname}}</h2>
-                    <button class="follow-button" v-on:click ="clickOn">{{clicked}}</button>
+                    <button class="follow-button" :style="{'background-color': clickedColor, 'border': '2px solid purple', 'color': textColor}" v-on:click="colorChange">{{clickedText}}</button>
                 </li>
             </div>
-    </ul>
+  </div>
+
+  </body>
 </template>
 
 <script>
@@ -39,6 +46,15 @@
 
     export default {
         name: 'Browse',
+      data() {
+          return {
+            isOpen: true,
+            textColor: 'white',
+            clickedColor: 'purple',
+            clickedText: 'Follow',
+            alteredState: true
+          }
+      },
         computed:  {
             ...mapGetters(['allProfiles']),
             ...mapGetters(['allUsers'])
@@ -47,6 +63,21 @@
         methods: {
             ...mapActions(['loadProfilesData']),
             ...mapActions(['loadUsersData']),
+
+          colorChange: function() {
+            console.log(this.alteredState);
+
+            if (this.alteredState) {
+              this.clickedColor = 'purple'
+              this.clickedText = "Follow"
+              this.textColor = 'white'
+            } else {
+              this.clickedColor = 'white'
+              this.clickedText = "Following"
+              this.textColor = 'purple'
+            }
+            this.alteredState = !this.alteredState
+          },
 
             toggle: function () {
                 this.isOpen = !this.isOpen;
@@ -71,27 +102,61 @@
             this.loadUsersData();
             this.toggle();
             this.clickOn();
+            this.colorChange();
         }
     }
 </script>
 <style scoped>
-    ul {
-        width: 50%;
-        margin: auto auto;
-        display:block;
-        position:center;
-    }
+* {
+  font-family: 'Roboto Slab', serif;
+  outline: none;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1;
+}
+
+header:hover {
+  box-shadow: 0 -20px 30px #4d4d4d;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: #0277bd;
+  color: #263238;
+}
+
+.main-container {
+  width: 50%;
+  min-height: 100%;
+  margin: auto auto;
+  padding: 90px 15px 15px 15px;
+  background-color: #ffffff;
+}
 
     nav {
         display: flex;
         background-color: #ffffff;
         align-items: center;
+        position:relative;
+
     }
 
     nav div {
         height: 30px;
         flex-grow: 4;
         padding: 10px;
+
+
     }
 
     nav div img {
@@ -101,6 +166,7 @@
         border-radius: 100%;
         object-fit: cover;
         object-position: top center;
+
     }
 
     nav div.search-container > input {
@@ -119,11 +185,14 @@
         padding: 5px;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
+
     }
 
     nav div.avatar-container {
         margin-right: 15px;
         text-align: right;
+
+
     }
 
     .logo-container {
@@ -132,24 +201,6 @@
         padding: 10px;
         position: relative;
     }
-    .search-button {
-        height: 30px;
-        width: 20%;
-        margin: 0;
-        padding: 5px;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-
-    #avatar-img {
-        width: 35px;
-        height: 35px;
-        border-radius: 100%;
-        object-fit: cover;
-        object-position: top;
-        margin: 5px;
-    }
-
 
     .drop-down-container {
         position: relative;
@@ -159,6 +210,8 @@
         padding: 10px;
         text-align: right;
         display: block;
+        position:absolute;
+
     }
 
     .drop-down-container span {
@@ -194,7 +247,6 @@
 
     .profile {
         text-align: center;
-        float:right;
         padding: 30px;
     }
     h2 {
@@ -206,9 +258,7 @@
         margin-inline-end: 0px;
         font-weight: bold;
     }
-    span{
-        display: block;
-    }
+
     .follow-button {
         background-color: purple;
         padding: 8px 16px;
@@ -217,5 +267,14 @@
         border: none;
         border-radius: 4px;
     }
+
+button {
+  padding: 8px 16px;
+  margin: 4px 0;
+  color: #ffffff;
+  background-color: #01579b;
+  border: none;
+  border-radius: 4px;
+}
 
 </style>

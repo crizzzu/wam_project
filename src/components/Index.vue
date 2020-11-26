@@ -1,6 +1,7 @@
 <template>
-    <ul>
-        <nav>
+  <body>
+    <header>
+      <nav>
             <div class="logo-container">
                 <img src="../assets/logo1.png" alt="postIt">
             </div>
@@ -23,9 +24,11 @@
                 </div>
             </div>
         </nav>
-        <section class="main-container">
+    </header>
+
+    <div class="main-container" >
             <li v-for="(post, index) in allPosts" :key="index">
-                <section class="post">
+                <div class="post">
                     <div class="post-author">
                         <span class="post-author-info">
                             <img v-bind:src="post.author.avatar">
@@ -35,181 +38,213 @@
                     </div>
                     <div class="post-image">
                             <img v-if="post.media" v-bind:src="post.media.url" alt="">
-                        <div class="post-title">
-                            <h3>{{post.text}}</h3>
-                            <div class="post-actions">
-                                <button type="button" name="like" :style="isClicked ? { 'background-color': 'blue' } : null" @click="toggleIsClicked" class="like-button">{{post.likes}}</button>
-                            </div>
-                        </div>
                     </div>
-                </section>
+                        <div class="post-title">
+                          <h3>{{post.text}}</h3>
+                        </div>
+                        <div class="post-actions">
+                          <button id="like-button" :style="{'background-color': clickedColor}" v-on:click="colorChange">{{post.likes}}</button>
+                        </div>
+                </div>
             </li>
-        </section>
-    </ul>
+        </div>
+  </body>
 </template>
 
 <script>
     import {mapGetters, mapActions} from 'vuex';
 
     export default {
-        name: 'Index',
-        computed:  {
-            ...mapGetters(['allPosts']),
-            ...mapGetters(['allUsers'])
-        },
-        methods: {
-            ...mapActions(['loadPosts']),
-            ...mapActions(['loadUsersData']),
+      name: 'Index',
+      data() {
+        return {
+          isOpen: true,
+          clickedColor: '',
+          alteredState: true
+      }},
+      computed: {
+        ...mapGetters(['allPosts']),
+        ...mapGetters(['allUsers'])
+      },
+      methods: {
+        ...mapActions(['loadPosts']),
+        ...mapActions(['loadUsersData']),
 
-            toggle: function () {
-                this.isOpen = !this.isOpen;
-            },
-            show: function () {
-                this.isOpen = true;
-            },
-            hide: function () {
-                this.isOpen = false;
-            },
-            toggleIsClicked: function () {
-                this.isClicked = !this.isClicked
-            }
+        colorChange: function() {
+          console.log(this.alteredState);
+
+          if (this.alteredState) {
+            this.clickedColor = 'blue'
+          } else {
+            this.clickedColor = '#8a8a8a'
+          }
+          // this is toggle function, so it's OK to
+          // toggle the state every time the button is clicked
+          this.alteredState = !this.alteredState
         },
-        created() {
-            this.loadPosts();
-            this.loadUsersData();
-            this.toggle();
-            this.toggleIsClicked();
+
+        toggle: function () {
+          this.isOpen = !this.isOpen;
+        },
+        show: function () {
+          this.isOpen = true;
+        },
+        hide: function () {
+          this.isOpen = false;
         }
-    }
+      },
+        created() {
+          this.loadPosts();
+          this.loadUsersData();
+          this.toggle();
+        }
+      }
 </script>
 <style scoped>
-    ul {
-        width: 30%;
-        margin: auto auto;
-        display:block;
-        position:center;
-    }
+
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1;
+}
+
+header:hover {
+  box-shadow: 0 -20px 30px #4d4d4d;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: #0277bd;
+  color: #263238;
+}
+
     nav {
-        display: flex;
-        background-color: #ffffff;
-        align-items: center;
+      display: flex;
+      background-color: #ffffff;
+      align-items: center;
     }
 
     nav div {
-        height: 30px;
-        flex-grow: 4;
-        padding: 10px;
+      height: 30px;
+      flex-grow: 4;
+      padding: 10px;
     }
 
     nav div img {
-        height: 100%;
-        width: 30px;
-        margin-left: 15px;
-        border-radius: 100%;
-        object-fit: cover;
-        object-position: top center;
+      height: 100%;
+      width: 30px;
+      margin-left: 15px;
+      border-radius: 100%;
+      object-fit: cover;
+      object-position: top center;
     }
 
     nav div.search-container > input {
-        box-sizing: border-box;
-        height: 30px;
-        width: 80%;
-        margin: 0;
-        padding: 5px;
-        border: 1px solid #e0e0e0;
+      box-sizing: border-box;
+      height: 30px;
+      width: 80%;
+      margin: 0;
+      padding: 5px;
+      border: 1px solid #e0e0e0;
     }
 
     nav div.search-container > button {
-        height: 30px;
-        width: 20%;
-        margin: 0;
-        padding: 5px;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+      height: 30px;
+      width: 20%;
+      margin: 0;
+      padding: 5px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      position: relative;
     }
 
     nav div.avatar-container {
-        margin-right: 15px;
-        text-align: right;
+      margin-right: 15px;
+      text-align: right;
+      position: relative;
     }
 
-
-    #avatar-img {
-        width: 35px;
-        height: 35px;
-        border-radius: 100%;
-        object-fit: cover;
-        object-position: top;
-        margin: 5px;
-    }
+span{
+  display: block;
+}
 
     .main-container {
-        width: 100%;
-        min-height: 100%;
-        margin: auto auto;
-        padding: 90px 15px 15px 15px;
-        background-color: #ffffff;
-    }
-    span{
-        display: block;
-    }
-    a {
-        color: #40c4ff;
+      width: 50%;
+      min-height: 100%;
+      margin: auto auto;
+      padding: 90px 15px 15px 15px;
+      background-color: #ffffff;
     }
 
     .post {
-        margin: 10px auto;
-        box-shadow: 0 0 15px rgba(38, 50, 56, 0.33);
-        border-radius: 5px;
-        width: 70%;
-        min-height: 200px;
-        max-height: 350px;
-        object-fit: cover;
-        object-position: center;
-        float: left;
-        position: relative;
-        padding: 10px;
-
-
-    }
-    .post-author .post-author-info {
-        float: left;
-        position: relative;
-        width: 50%;
-        padding: 10px;
-    }
-    .post-author-info small {
-        float: right;
-        position: absolute;
-        width: 50%;
-        padding: 10px;
-    }
-    #createTime {
-        float: right;
-        position: absolute;
-        width: 50%;
-        padding: 20px;
-
-
-    }
-    .post-author img {
-        width: 35px;
-        height: 35px;
-        border-radius: 100%;
-        object-fit: cover;
-        object-position: top;
-    }
-    .post-image img, video {
-        width: 100%;
-        min-height: 150px;
-        max-height: 350px;
-        object-fit: cover;
-        object-position: top center;
+      width: 80%;
+      margin: 15px auto;
+      box-shadow: 0 0 15px rgba(38, 50, 56, 0.33);
+      border-radius: 5px;
     }
 
-    .post-title {
-        position:relative;
+    .post .post-author {
+      padding: 10px;
+    }
 
+    .post .post-author::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    .post .post-author .post-author-info {
+      float: left;
+      position: relative;
+      width: 50%;
+    }
+
+    .post .post-author .post-author-info img {
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+      object-fit: cover;
+      object-position: top;
+      margin: 5px;
+    }
+
+    .post .post-author .post-author-info small {
+      position: absolute;
+      top: 10px;
+      left: 35px;
+    }
+
+    .post .post-author .post-author-info + small {
+      float: right;
+      color: grey;
+      padding: 10px;
+    }
+
+    .post .post-image img, video {
+      width: 100%;
+      min-height: 150px;
+      max-height: 350px;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .post .post-title {
+      padding: 10px;
+    }
+
+    .post .post-title h3 {
+      display: inline;
+    }
+
+    .post .post-title ~ .post-actions {
+      padding: 10px;
     }
 
     li {
@@ -217,8 +252,8 @@
         list-style-type: none;
     }
 
-    .like-button {
-        background-image: url(/images/like.png);
+    #like-button {
+        background-image: url("../assets/like.png");
         background-size: 15px;
         background-repeat: no-repeat;
         background-position: 5px center;
@@ -230,6 +265,8 @@
         text-align: left;
         border: none;
     }
+
+
     button {
         padding: 8px 16px;
         margin: 4px 0;
