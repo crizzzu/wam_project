@@ -3,6 +3,7 @@
   <header>
             <nav>
                 <div class="logo-container">
+                    <img src="../assets/logo1.png" alt="postIt">
                 </div>
                 <div class="search-container">
                     <input type="text" name="search"><button type="button">Search</button>

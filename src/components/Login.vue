@@ -110,4 +110,9 @@ a {
         border-radius: 4px;
     }
 
+button:hover {
+  box-shadow: 0 0 5px rgba(38, 50, 56, 0.7);
+  cursor: pointer;
+}
+
 </style>
