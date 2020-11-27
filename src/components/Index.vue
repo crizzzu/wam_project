@@ -146,6 +146,7 @@ body {
       object-position: top center;
     }
 
+
     nav div.search-container > input {
       box-sizing: border-box;
       height: 30px;
@@ -165,15 +166,35 @@ body {
       position: relative;
     }
 
-    nav div.avatar-container {
+    avatar-container {
       margin-right: 15px;
+      margin-right: auto;
       text-align: right;
-      position: relative;
+      position: absolute;
+      float:right;
     }
 
-span{
+.drop-down-container {
+  height: auto;
+  width: auto;
+  background-color: #ffffff;
+  padding: 10px;
+  text-align: right;
+  display: block;
+  position:absolute;
+
+}
+
+.drop-down-container span {
   display: block;
 }
+
+.drop-down-container span.separator{
+  border-bottom: 1px solid #d7d7d7;
+  margin: 10px -10px;
+  width: auto;
+}
+
 
     .main-container {
       width: 50%;

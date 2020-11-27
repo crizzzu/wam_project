@@ -189,9 +189,11 @@ body {
 
     }
 
-    nav div.avatar-container {
+    avatar-container {
         margin-right: 15px;
         text-align: right;
+        position: absolute;
+        float:right;
 
 
     }
@@ -204,7 +206,6 @@ body {
     }
 
     .drop-down-container {
-        position: relative;
         height: auto;
         width: auto;
         background-color: #ffffff;
